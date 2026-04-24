@@ -60,7 +60,7 @@ export default function ProductionPage() {
     { key: 'startDate', label: 'Start' },
     { key: 'endDate', label: 'End' },
     { key: 'targetUnits', label: 'Target Units', render: r => r.targetUnits?.toLocaleString() },
-    { key: 'status', label: 'Status', render: r => <Badge status={r.status} /> },
+    { key: 'status', label: 'Status', render: r =>  r.status },
     { key: 'actions', label: 'Actions', render: r => (
       <div className="flex gap-2">
         <button onClick={() => openModal('editPlan', r)} className="text-blue-400 hover:text-blue-300"><Pencil size={14} /></button>
@@ -74,7 +74,7 @@ export default function ProductionPage() {
     { key: 'name', label: 'Machine' },
     { key: 'plantId', label: 'Plant ID' },
     { key: 'capacity', label: 'Capacity' },
-    { key: 'status', label: 'Status', render: r => <Badge status={r.status} /> },
+    { key: 'status', label: 'Status', render: r => r.status  },
     { key: 'actions', label: 'Actions', render: r => (
       <div className="flex gap-2">
         <button onClick={() => openModal('editMachine', r)} className="text-blue-400 hover:text-blue-300"><Pencil size={14} /></button>
@@ -89,7 +89,7 @@ export default function ProductionPage() {
     { key: 'planName', label: 'Plan' },
     { key: 'machineName', label: 'Machine' },
     { key: 'quantity', label: 'Qty' },
-    { key: 'status', label: 'Status', render: r => <Badge status={r.status} /> },
+    { key: 'status', label: 'Status', render: r => r.status },
     { key: 'actions', label: 'Actions', render: r => (
       <div className="flex gap-2">
         <button onClick={() => openModal('editWO', r)} className="text-blue-400 hover:text-blue-300"><Pencil size={14} /></button>

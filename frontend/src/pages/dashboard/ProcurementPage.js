@@ -36,7 +36,7 @@ export default function ProcurementPage() {
   const vendorCols = [
     {key:'vendorId',label:'S.NO'},{key:'name',label:'Vendor'},
     {key:'contactInfo',label:'Contact'},{key:'rating',label:'Rating',render:r=>`⭐ ${r.rating?.toFixed(1)}`},
-    {key:'status',label:'Status',render:r=><Badge status={r.status}/>},
+    {key:'status',label:'Status',render:r=> r.status },
     {key:'actions',label:'',render:r=><div className="flex gap-2"><button onClick={()=>setModal({open:true,type:'editVendor',data:r})} className="text-blue-400 hover:text-blue-300"><Pencil size={14}/></button><button onClick={()=>delV(r.vendorId)} className="text-red-400 hover:text-red-300"><Trash2 size={14}/></button></div>}
   ];
   const poCols = [
@@ -44,14 +44,14 @@ export default function ProcurementPage() {
     {key:'quantity',label:'Qty'},{key:'unitPrice',label:'Unit Price',render:r=>`$${r.unitPrice}`},
     {key:'totalAmount',label:'Total',render:r=>`$${(r.totalAmount||0).toLocaleString()}`},
     {key:'orderDate',label:'Order Date'},{key:'expectedDeliveryDate',label:'Exp. Delivery'},
-    {key:'status',label:'Status',render:r=><Badge status={r.status}/>},
+    {key:'status',label:'Status',render:r=> r.status },
     {key:'actions',label:'',render:r=><div className="flex gap-2"><button onClick={()=>setModal({open:true,type:'editPO',data:r})} className="text-blue-400 hover:text-blue-300"><Pencil size={14}/></button><button onClick={()=>delPO(r.poId)} className="text-red-400 hover:text-red-300"><Trash2 size={14}/></button></div>}
   ];
   const invCols = [
     {key:'invoiceId',label:'S.NO'},{key:'poId',label:'PO '},{key:'vendorName',label:'Vendor'},
     {key:'amount',label:'Amount',render:r=>`$${r.amount?.toLocaleString()}`},
     {key:'issueDate',label:'Issue Date'},{key:'dueDate',label:'Due Date'},
-    {key:'status',label:'Status',render:r=><Badge status={r.status}/>},
+    {key:'status',label:'Status',render:r=> r.status },
     {key:'actions',label:'',render:r=><div className="flex gap-2"><button onClick={()=>setModal({open:true,type:'editInvoice',data:r})} className="text-blue-400 hover:text-blue-300"><Pencil size={14}/></button><button onClick={()=>delInv(r.invoiceId)} className="text-red-400 hover:text-red-300"><Trash2 size={14}/></button></div>}
   ];
 

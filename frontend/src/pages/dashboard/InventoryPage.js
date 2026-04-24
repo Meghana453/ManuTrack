@@ -118,11 +118,11 @@ export default function InventoryPage() {
   const itemCols = [
     { key: 'itemId', label: 'S.NO' },
     { key: 'description', label: 'Item' },
-    { key: 'itemType', label: 'Type', render: r => <Badge status={r.itemType} /> },
+    { key: 'itemType', label: 'Type', render: r => r.itemType },
     { key: 'unitOfMeasure', label: 'Unit' },
     { key: 'currentStock', label: 'Stock', render: r => r.currentStock?.toLocaleString() },
     { key: 'reorderLevel', label: 'Reorder At', render: r => r.reorderLevel?.toLocaleString() },
-    { key: 'status', label: 'Status', render: r => <Badge status={r.status} /> },
+    { key: 'status', label: 'Status', render: r => r.status },
 
     // ------------------------------
     // ✔ Replace actions with menu
@@ -143,7 +143,7 @@ export default function InventoryPage() {
 
     { key: 'quantity', label: 'Qty' },
     { key: 'requestedDate', label: 'Date' },
-    { key: 'status', label: 'Status', render: r => <Badge status={r.status} /> },
+    { key: 'status', label: 'Status', render: r => r.status },
     {
       key: 'actions',
       label: 'Actions',

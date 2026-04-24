@@ -32,19 +32,86 @@ export default function LogisticsPage() {
   const delC = async(id)=>{ if(!window.confirm('Delete?')) return; try{await logisticsApi.carriers.delete(id);toast.success('Deleted');load();}catch{toast.error('Failed');} };
   const delR = async(id)=>{ if(!window.confirm('Delete?')) return; try{await logisticsApi.routes.delete(id);toast.success('Deleted');load();}catch{toast.error('Failed');} };
 
-  const shipCols = [
-    {key:'shipmentId',label:'S.no'},{key:'destination',label:'Destination'},
-    {key:'carrierName',label:'Carrier'},{key:'scheduledDate',label:'Scheduled'},
-    {key:'actualDispatchDate',label:'Dispatched'},{key:'deliveryDate',label:'Delivered'},
-    {key:'status',label:'Status',render:r=><Badge status={r.status}/>},
-    {key:'actions',label:'',render:r=><div className="flex gap-2"><button onClick={()=>setModal({open:true,type:'editShip',data:r})} className="text-blue-400 hover:text-blue-300"><Pencil size={14}/></button><button onClick={()=>delS(r.shipmentId)} className="text-red-400 hover:text-red-300"><Trash2 size={14}/></button></div>}
-  ];
+ const shipCols = [
+   { key:'shipmentId', label:'S.no' },
+   { key:'destination', label:'Destination' },
+   { key:'carrierName', label:'Carrier' },
+   { key:'scheduledDate', label:'Scheduled' },
+   { key:'actualDispatchDate', label:'Dispatched' },
+   { key:'deliveryDate', label:'Delivered' },
+
+ {
+    key: 'status',
+    label: 'Status',
+    render: r => {
+      const statusStyles = {
+        DELIVERED: 'bg-green-100 text-green-700',
+        IN_TRANSIT: 'bg-yellow-100 text-orange-700',
+        DELAYED: 'bg-red-100 text-red-700',
+        SCHEDULED: 'bg-blue-100 text-blue-700'
+      };
+
+      return (
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            statusStyles[r.status] || 'bg-slate-100 text-slate-600'
+          }`}
+        >
+          {r.status.replace('_', ' ')}
+        </span>
+      );
+    }
+  },
+   {
+     key:'actions',
+     label:'',
+     render: r => (
+       <div className="flex gap-2">
+         <button
+           onClick={() => setModal({ open:true, type:'editShip', data:r })}
+           className="text-blue-400 hover:text-blue-300"
+         >
+           <Pencil size={14}/>
+         </button>
+         <button
+           onClick={() => delS(r.shipmentId)}
+           className="text-red-400 hover:text-red-300"
+         >
+           <Trash2 size={14}/>
+         </button>
+       </div>
+     )
+   }
+ ];
+
   const carrierCols = [
-    {key:'carrierId',label:'S.no'},{key:'name',label:'Carrier'},{key:'contactInfo',label:'Contact'},
-    {key:'rating',label:'Rating',render:r=>`⭐ ${r.rating?.toFixed(1)}`},
-    {key:'status',label:'Status',render:r=><Badge status={r.status}/>},
-    {key:'actions',label:'',render:r=><div className="flex gap-2"><button onClick={()=>setModal({open:true,type:'editCarrier',data:r})} className="text-blue-400 hover:text-blue-300"><Pencil size={14}/></button><button onClick={()=>delC(r.carrierId)} className="text-red-400 hover:text-red-300"><Trash2 size={14}/></button></div>}
+    { key:'carrierId', label:'S.no' },
+    { key:'name', label:'Carrier' },
+    { key:'contactInfo', label:'Contact' },
+    { key:'rating', label:'Rating', render: r => `⭐ ${r.rating?.toFixed(1)}` },
+    { key:'status', label:'Status', render: r => r.status },
+    {
+      key:'actions',
+      label:'',
+      render: r => (
+        <div className="flex gap-2">
+          <button
+            onClick={() => setModal({ open:true, type:'editCarrier', data:r })}
+            className="text-blue-400 hover:text-blue-300"
+          >
+            <Pencil size={14}/>
+          </button>
+          <button
+            onClick={() => delC(r.carrierId)}
+            className="text-red-400 hover:text-red-300"
+          >
+            <Trash2 size={14}/>
+          </button>
+        </div>
+      )
+    }
   ];
+
   const routeCols = [
     {key:'routeId',label:'S.no'},{key:'origin',label:'Origin'},{key:'destination',label:'Destination'},
     {key:'distance',label:'Distance (km)'},{key:'estimatedTimeHours',label:'Est. Time (hrs)'},
@@ -105,7 +172,7 @@ function ShipmentModal({isOpen,onClose,shipment,carriers}) {
       <div><label className="label">Actual Dispatch</label><input type="date" className="input" value={form.actualDispatchDate?.slice(0,10)||''} onChange={e=>set('actualDispatchDate',e.target.value)}/></div>
     </div>
     <div><label className="label">Delivery Date</label><input type="date" className="input" value={form.deliveryDate?.slice(0,10)||''} onChange={e=>set('deliveryDate',e.target.value)}/></div>
-//    <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
+    <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
   </div></Modal>);
 }
 
@@ -121,7 +188,7 @@ function CarrierModal({isOpen,onClose,carrier}) {
       <div><label className="label">Rating</label><input type="number" step="0.1" min="0" max="5" className="input" value={form.rating} onChange={e=>set('rating',e.target.value)}/></div>
       <div><label className="label">Status</label><select className="input" value={form.status} onChange={e=>set('status',e.target.value)}>{CARRIER_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>
     </div>
-//    <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
+    <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
   </div></Modal>);
 }
 
@@ -137,6 +204,7 @@ function RouteModal({isOpen,onClose,route}) {
       <div><label className="label">Distance (km)</label><input type="number" className="input" value={form.distance} onChange={e=>set('distance',e.target.value)}/></div>
       <div><label className="label">Est. Time (hrs)</label><input type="number" className="input" value={form.estimatedTimeHours} onChange={e=>set('estimatedTimeHours',e.target.value)}/></div>
     </div>
-//   <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
+        <div className="flex gap-2 justify-end pt-2"><button className="btn-secondary" onClick={onClose}>Cancel</button><button className="btn-primary" onClick={save} disabled={saving}>{saving?'Saving...':'Save'}</button></div>
+
   </div></Modal>);
 }
